@@ -32,21 +32,17 @@ public class PageDaoImpl implements PageDao {
 
 
     @Override
-    public long create(Page page){
+    public void create(Page page){
 
         LOG.log(Level.INFO, "Inserting page "+page.toString());
-        String sql = "INSERT INTO payment_pages(aggregators_id,payment_page_type_id,content_id,html_file,factor)";
-        sql += " VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO payment_pages(id,aggregators_id,payment_page_type_id,content_id,html_file,factor)";
+        sql += " VALUES(?,?,?,?,?,?)";
 
-        Object[] params = {page.getAggregatorsId(),page.getPaymentPageTypeId(),page.getContentId(), page.getHtmlFile(),page.getFactor()};
+        Object[] params = {page.getId(), page.getAggregatorsId(),page.getPaymentPageTypeId(),page.getContentId(), page.getHtmlFile(),page.getFactor()};
 
-        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR);
-        factory.setReturnGeneratedKeys(true);
-        KeyHolder keyholder = new GeneratedKeyHolder();
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR);
 
-        jdbcTemplate.update(factory.newPreparedStatementCreator(params), keyholder);
-        long id = keyholder.getKey().longValue();
-        return id;
+        jdbcTemplate.update(factory.newPreparedStatementCreator(params));
 
     }
 

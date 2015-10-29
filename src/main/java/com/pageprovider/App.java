@@ -4,6 +4,7 @@ import com.pageprovider.domain.Page;
 import com.pageprovider.services.PageProviderService;
 import com.pageprovider.util.exceptions.NotFoundException;
 import com.pageprovider.util.validation.SimpleValidator;
+import com.sun.xml.internal.ws.encoding.ContentType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,14 +32,16 @@ public class App
 
 
     @ResponseBody
-    @RequestMapping(value = "/page/{contentId}/{paymentPageTypeId}/{factor}", method = RequestMethod.POST,consumes = "text/html",produces = "application/json")
-    public long getPage(
+    @RequestMapping(value = "/page/{id}/{contentId}/{paymentPageTypeId}/{factor}", method = RequestMethod.POST, consumes = "text/html",produces = "application/json")
+    public String getPage(
+            @PathVariable("id") long pageId,
             @PathVariable("contentId") long contentId,
             @PathVariable("paymentPageTypeId") int paymentPageTypeId,
             @PathVariable("factor") String factor,
             @RequestBody String html) throws Exception{
 
         Page page = new Page();
+        page.setId(pageId);
         page.setContentId(contentId);
         page.setPaymentPageTypeId(paymentPageTypeId);
         page.setFactor(factor);
@@ -46,11 +49,21 @@ public class App
 
 
         new SimpleValidator()
-                .notNull("contentId", "htmlFile","paymentPageTypeId","factor")
+                .notNull("id","contentId", "htmlFile","paymentPageTypeId","factor")
                 .validate(page);
 
 
-        return pageProviderService.createPage(page);
+
+        try{
+            pageProviderService.createPage(page);
+            return "{\"result\" :\"OK\"}";
+        }catch(Exception ex){
+            return "{\"result\" :\"ERROR\"," +
+                    "\"reason\":\""+ex.getMessage()+"\"}";
+        }
+
+
+
 
     }
 

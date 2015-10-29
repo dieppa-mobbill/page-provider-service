@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PageDao {
 
-    long create(Page page);
+    void create(Page page);
 
     Page find(int contentId, int pageType, String factor) throws Exception;
 

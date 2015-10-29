@@ -21,10 +21,10 @@ public class PageProviderService {
     }
 
 
-    public long createPage(Page page){
+    public void createPage(Page page){
 
         page.setAggregatorsId(24);
-        return this.pageDao.create(page);
+        this.pageDao.create(page);
 
     }
 
