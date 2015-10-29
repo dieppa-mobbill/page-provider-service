@@ -4,7 +4,6 @@ import com.pageprovider.domain.Page;
 import com.pageprovider.services.PageProviderService;
 import com.pageprovider.util.exceptions.NotFoundException;
 import com.pageprovider.util.validation.SimpleValidator;
-import com.sun.xml.internal.ws.encoding.ContentType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
